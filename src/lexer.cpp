@@ -12,7 +12,7 @@ Token::Token(TokenType _type, std::string _value) {
     value = _value;
 }
 
-Lexer::Lexer(const std::string &str) {
+Lexer::Lexer(const std::string& str) {
     source = str;
     tokens = std::vector<Token>();
     start = 0;
@@ -115,7 +115,7 @@ void Lexer::add_token(TokenType type, std::string value) {
 }
 
 void Lexer::identifier() {
-    while (isalnum(peek())) advance();
+    while (isalnum(peek()) || peek() == '_' || peek() == '-') advance();
     std::string name = source.substr(start, current - start);
     if (keywords.find(name) != keywords.end()) {
         tokens.push_back(Token(keywords.find(name)->second));

@@ -21,6 +21,9 @@ enum class TokenType {
     CHAR, STRING, INTEGER, FLOAT, IDENTIFIER, 
     
     _NULL, TRUE, FALSE, IF, FOR, WHILE, RETURN, LET, FN, REF, CLASS,
+    CHAR_T, STR_T, FLOAT_T,
+    I8, I16, I32, I64, 
+    U8, U16, U32, U64,
 
     _EOF
 };
@@ -45,7 +48,18 @@ const std::map<std::string, TokenType> keywords {
     { "let", TokenType::LET },
     { "fn", TokenType::FN },
     { "ref", TokenType::REF },
-    { "class", TokenType::CLASS }
+    { "class", TokenType::CLASS },
+    { "char", TokenType::CHAR_T },
+    { "str", TokenType::STR_T },
+    { "float", TokenType::FLOAT_T },
+    { "i8", TokenType::I8 },
+    { "i16", TokenType::I16 },
+    { "i32", TokenType::I32 },
+    { "i64", TokenType::I64 },
+    { "u8", TokenType::U8 },
+    { "u16", TokenType::U16 },
+    { "u32", TokenType::U32 },
+    { "u64", TokenType::U64 },
 };
 
 class Lexer {
