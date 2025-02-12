@@ -74,7 +74,7 @@ std::vector<Token> Lexer::tokenize() {
                 break;
 
             default:
-                if (isalpha(c)) identifier();
+                if (isalpha(c) || c == '_') identifier();
                 else if (isdigit(c)) number();
                 break;
         }
