@@ -7,29 +7,18 @@
 #include "token.h"
 
 template <typename T>
-class IExprVisitor {
-public:
-    virtual T visitLiteral(Literal* literal) = 0;
-    virtual T visitBinary(Binary* literal) = 0;
-    virtual T visitUnary(Unary* literal) = 0;
-};
+class IExprVisitor;
 
 class Expr {
 public:
-    virtual std::variant<int, double, std::string, bool> accept(IExprVisitor<std::variant<int, double, std::string, bool>>& visitor) = 0;
+
 };
 
+template <typename R>
 class Literal : public Expr {
 public:
-    using ValueType = std::variant<int, double, std::string, bool>;
-
-    const ValueType value;
-    Literal(ValueType _value) : value(_value) {}
-    
-    template <typename T>
-    T accept(IExprVisitor<T>& visitor) {
-        return visitor.visitLiteral(this);
-    }
+    const R value;
+    Literal(R _value) : value(_value) {}
 };
 
 class Binary : public Expr {
@@ -41,11 +30,6 @@ public:
     Binary(std::shared_ptr<Expr> _lhs, 
            std::shared_ptr<Token> _operation, 
            std::shared_ptr<Expr> _rhs) : lhs(_lhs), operation(_operation), rhs(_rhs) {}
-
-    template <typename T>
-    T accept(IExprVisitor<T>& visitor) {
-        return visitor.visitBinary(this);
-    }
 };
 
 class Unary : public Expr {
@@ -55,11 +39,13 @@ public:
 
     Unary(std::shared_ptr<Token> _operation,
           std::shared_ptr<Expr> _rhs) : operation(_operation), rhs(_rhs) {}
+};
 
-    template <typename T>
-    T accept(IExprVisitor<T>& visitor) {
-        return visitor.visitUnary(this);
-    }
+class Grouping : public Expr {
+public:
+    const std::shared_ptr<Expr> expr;
+
+    Grouping(std::shared_ptr<Expr> _expr) : expr(_expr) {}
 };
 
 #endif
