@@ -73,7 +73,7 @@ std::shared_ptr<Expr> Parser::primary() {
 
     if (match({TokenType::STRING})) return std::make_shared<Literal<std::string>>(previous()->value.value());
     if (match({TokenType::CHAR})) return std::make_shared<Literal<char>>(previous()->value.value().at(0));
-    if (match({TokenType::INTEGER})) return std::make_shared<Literal<int>>(std::stoi(previous()->value.value()));
+    if (match({TokenType::INT})) return std::make_shared<Literal<int>>(std::stoi(previous()->value.value()));
     if (match({TokenType::FLOAT})) return std::make_shared<Literal<float>>(std::stof(previous()->value.value()));
 
     if (match({TokenType::LEFT_PAREN})) {

@@ -126,7 +126,7 @@ void Lexer::number() {
     }
 
     if (is_float) add_token(TokenType::FLOAT, source.substr(start, current - start));
-    else add_token(TokenType::INTEGER, source.substr(start, current - start));
+    else add_token(TokenType::INT, source.substr(start, current - start));
 }
 
 void Lexer::character() {
