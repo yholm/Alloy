@@ -72,6 +72,9 @@ std::shared_ptr<Expr> Parser::primary() {
     if (match({TokenType::_NULL})) return std::make_shared<Literal<std::nullptr_t>>(nullptr);
 
     if (match({TokenType::STRING})) return std::make_shared<Literal<std::string>>(previous()->value.value());
+    if (match({TokenType::CHAR})) return std::make_shared<Literal<char>>(previous()->value.value().at(0));
+    if (match({TokenType::INTEGER})) return std::make_shared<Literal<int>>(std::stoi(previous()->value.value()));
+    if (match({TokenType::FLOAT})) return std::make_shared<Literal<float>>(std::stof(previous()->value.value()));
 
     if (match({TokenType::LEFT_PAREN})) {
         std::shared_ptr<Expr> expr = expression();
