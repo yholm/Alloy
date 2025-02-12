@@ -3,15 +3,6 @@
 #include <iostream>
 #include <stdlib.h>
 
-Token::Token(TokenType _type) {
-    type = _type;
-}
-
-Token::Token(TokenType _type, std::string _value) {
-    type = _type;
-    value = _value;
-}
-
 Lexer::Lexer(const std::string& str) {
     source = str;
     tokens = std::vector<Token>();
