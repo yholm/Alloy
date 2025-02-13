@@ -16,7 +16,7 @@ std::shared_ptr<Expr> Parser::equality() {
     if (match({TokenType::EQUAL_EQUAL, TokenType::BANG_EQUAL})) {
         std::shared_ptr<Token> operation = previous();
         std::shared_ptr<Expr> rhs = comparison();
-        return std::make_shared<Binary>(expr, operation, rhs);
+        return std::make_shared<BinaryExpr>(expr, operation, rhs);
     }
 
     return expr;
@@ -28,7 +28,7 @@ std::shared_ptr<Expr> Parser::comparison() {
     if (match({TokenType::GREATER, TokenType::GREATER_EQUAL, TokenType::LESS, TokenType::LESS_EQUAL})) {
         std::shared_ptr<Token> operation = previous();
         std::shared_ptr<Expr> rhs = term();
-        return std::make_shared<Binary>(expr, operation, rhs);
+        return std::make_shared<BinaryExpr>(expr, operation, rhs);
     }
 
     return expr;
@@ -40,7 +40,7 @@ std::shared_ptr<Expr> Parser::term() {
     while (match({TokenType::PLUS, TokenType::MINUS})) {
         std::shared_ptr<Token> operation = previous();
         std::shared_ptr<Expr> rhs = factor();
-        return std::make_shared<Binary>(expr, operation, rhs);
+        return std::make_shared<BinaryExpr>(expr, operation, rhs);
     }
 
     return expr;
@@ -52,7 +52,7 @@ std::shared_ptr<Expr> Parser::factor() {
     while (match({TokenType::SLASH, TokenType::STAR})) {
         std::shared_ptr<Token> operation = previous();
         std::shared_ptr<Expr> rhs = unary();
-        return std::make_shared<Binary>(expr, operation, rhs);
+        return std::make_shared<BinaryExpr>(expr, operation, rhs);
     }
 
     return expr;
@@ -62,26 +62,26 @@ std::shared_ptr<Expr> Parser::unary() {
     if (match({TokenType::BANG, TokenType::MINUS})) {
         std::shared_ptr<Token> operation = previous();
         std::shared_ptr<Expr> rhs = unary();
-        return std::make_shared<Unary>(operation, rhs);
+        return std::make_shared<UnaryExpr>(operation, rhs);
     }
 
     return primary();
 }
 
 std::shared_ptr<Expr> Parser::primary() {
-    if (match({TokenType::TRUE})) return std::make_shared<Literal<bool>>(true);
-    if (match({TokenType::FALSE})) return std::make_shared<Literal<bool>>(false);
-    if (match({TokenType::_NULL})) return std::make_shared<Literal<std::nullptr_t>>(nullptr);
+    if (match({TokenType::TRUE})) return std::make_shared<LiteralExpr<bool>>(true);
+    if (match({TokenType::FALSE})) return std::make_shared<LiteralExpr<bool>>(false);
+    if (match({TokenType::_NULL})) return std::make_shared<LiteralExpr<std::nullptr_t>>(nullptr);
 
-    if (match({TokenType::STRING})) return std::make_shared<Literal<std::string>>(previous()->value.value());
-    if (match({TokenType::CHAR})) return std::make_shared<Literal<char>>(previous()->value.value().at(0));
-    if (match({TokenType::INT})) return std::make_shared<Literal<int>>(std::stoi(previous()->value.value()));
-    if (match({TokenType::FLOAT})) return std::make_shared<Literal<float>>(std::stof(previous()->value.value()));
+    if (match({TokenType::STRING})) return std::make_shared<LiteralExpr<std::string>>(previous()->value.value());
+    if (match({TokenType::CHAR})) return std::make_shared<LiteralExpr<char>>(previous()->value.value().at(0));
+    if (match({TokenType::INT})) return std::make_shared<LiteralExpr<int>>(std::stoi(previous()->value.value()));
+    if (match({TokenType::FLOAT})) return std::make_shared<LiteralExpr<float>>(std::stof(previous()->value.value()));
 
     if (match({TokenType::LEFT_PAREN})) {
         std::shared_ptr<Expr> expr = expression();
         consume(TokenType::RIGHT_PAREN);
-        return std::make_shared<Grouping>(expr);
+        return std::make_shared<GroupingExpr>(expr);
     }
 
     exit(EXIT_FAILURE);

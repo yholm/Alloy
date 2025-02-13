@@ -15,37 +15,37 @@ public:
 };
 
 template <typename R>
-class Literal : public Expr {
+class LiteralExpr : public Expr {
 public:
     const R value;
-    Literal(R _value) : value(_value) {}
+    LiteralExpr(R _value) : value(_value) {}
 };
 
-class Binary : public Expr {
+class BinaryExpr : public Expr {
 public:
     const std::shared_ptr<Expr> lhs;
     const std::shared_ptr<Token> operation;
     const std::shared_ptr<Expr> rhs;
 
-    Binary(std::shared_ptr<Expr> _lhs, 
+    BinaryExpr(std::shared_ptr<Expr> _lhs, 
            std::shared_ptr<Token> _operation, 
            std::shared_ptr<Expr> _rhs) : lhs(_lhs), operation(_operation), rhs(_rhs) {}
 };
 
-class Unary : public Expr {
+class UnaryExpr : public Expr {
 public:
     const std::shared_ptr<Expr> rhs;
     const std::shared_ptr<Token> operation;
 
-    Unary(std::shared_ptr<Token> _operation,
+    UnaryExpr(std::shared_ptr<Token> _operation,
           std::shared_ptr<Expr> _rhs) : operation(_operation), rhs(_rhs) {}
 };
 
-class Grouping : public Expr {
+class GroupingExpr : public Expr {
 public:
     const std::shared_ptr<Expr> expr;
 
-    Grouping(std::shared_ptr<Expr> _expr) : expr(_expr) {}
+    GroupingExpr(std::shared_ptr<Expr> _expr) : expr(_expr) {}
 };
 
 #endif
