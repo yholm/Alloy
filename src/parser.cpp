@@ -1,5 +1,7 @@
 #include "parser.h"
 
+#include "stmt.h"
+
 Parser::Parser(const std::vector<Token>& _tokens)
     : tokens(_tokens), current(0) {}
 
