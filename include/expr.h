@@ -14,6 +14,26 @@ public:
 
 };
 
+class AssignExpr : public Expr {
+public:
+    const std::string name;
+    const std::shared_ptr<Expr> value;
+
+    AssignExpr(std::string _name, std::shared_ptr<Expr> _value) 
+        : name(_name), value(_value) {}
+};
+
+class LogicExpr : public Expr {
+    const std::shared_ptr<Expr> lhs;
+    const std::shared_ptr<Token> operation;
+    const std::shared_ptr<Expr> rhs;
+
+    LogicExpr(std::shared_ptr<Expr> _lhs, 
+              std::shared_ptr<Token> _operation, 
+              std::shared_ptr<Expr> _rhs) 
+        : lhs(_lhs), operation(_operation), rhs(_rhs) {}
+};
+
 template <typename R>
 class LiteralExpr : public Expr {
 public:
@@ -46,6 +66,13 @@ public:
     const std::shared_ptr<Expr> expr;
 
     GroupingExpr(std::shared_ptr<Expr> _expr) : expr(_expr) {}
+};
+
+class VarExpr : public Expr {
+public:
+    const std::shared_ptr<Token> name;
+
+    VarExpr(std::shared_ptr<Token> _name) : name(_name) {}
 };
 
 #endif

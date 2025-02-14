@@ -14,6 +14,9 @@ private:
     int current;
     std::vector<Token> tokens;
     std::shared_ptr<Expr> expression();
+    std::shared_ptr<Expr> assign();
+    std::shared_ptr<Expr> or();
+    std::shared_ptr<Expr> and();
     std::shared_ptr<Expr> equality();
     std::shared_ptr<Expr> comparison();
     std::shared_ptr<Expr> term();

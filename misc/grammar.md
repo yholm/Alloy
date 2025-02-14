@@ -25,7 +25,7 @@ Stmt        = ExprStmt
 
 ExprStmt    = Expr ";" ;
 IfStmt      = "if" "(" Expr ")" Stmt ["else" Stmt] ;
-SwitchStmt  = "switch" "(" Expr ")" "{" Case "}" ;
+SwitchStmt  = "switch" "(" Expr ")" "{" {Case} "}" ;
 BreakStmt   = "break" ";" ;
 ForStmt     = "for" "(" (VarDecl | ExprStmt | ";") [Expr] ";" [Expr] ";" ")" Stmt ;
 WhileStmt   = "while" "(" Expr ")" Stmt ;

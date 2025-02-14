@@ -10,6 +10,48 @@ std::shared_ptr<Expr> Parser::expression() {
     return equality();
 }
 
+std::shared_ptr<Expr> Parser::assign() {
+    std::shared_ptr<Expr> expr = or();
+
+    if (match({TokenType::EQUAL})) {
+        std::shared_ptr<Token> equals = previous();
+        std::shared_ptr<Expr> value = assign();
+
+        if (auto varExpr = std::dynamic_pointer_cast<VarExpr>(expr)) {
+            std::shared_ptr<Token> name = varExpr->name;
+            return std::make_shared<AssignExpr>(name, value);
+        }
+
+        exit(EXIT_FAILURE);
+    }
+
+    return expr;
+}
+
+std::shared_ptr<Expr> Parser::or() {
+    std::shared_ptr<Expr> expr = and();
+
+    if (match({TokenType::OR_OR})) {
+        std::shared_ptr<Token> operation = previous();
+        std::shared_ptr<Expr> rhs = and();
+        return std::make_shared<LogicExpr>(expr, operation, rhs);
+    }
+
+    return expr;
+}
+
+std::shared_ptr<Expr> Parser::and() {
+    std::shared_ptr<Expr> expr = equality();
+
+    if (match({TokenType::AND_AND})) {
+        std::shared_ptr<Token> operation = previous();
+        std::shared_ptr<Expr> rhs = equality();
+        return std::make_shared<LogicExpr>(expr, operation, rhs);
+    }
+
+    return expr;
+}
+
 std::shared_ptr<Expr> Parser::equality() {
     std::shared_ptr<Expr> expr = comparison();
 
